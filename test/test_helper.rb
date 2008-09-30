@@ -3,6 +3,7 @@ require 'rubygems'
 require 'active_record'
 require 'active_record/fixtures'
 require 'active_support'
+require 'action_pack'
 
 require File.dirname(__FILE__) + '/../lib/ez/where'
 require File.dirname(__FILE__) + '/../lib/ez/clause'

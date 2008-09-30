@@ -84,6 +84,12 @@ module EZ
         return self.cond    
       end
       
+      def ilike(pattern)
+        @test = :ilike
+        @value = pattern
+        return self.cond
+      end
+      
       # The % operator has been over-ridden here to
       # stand in for the sql SOUNDS LIKE "%foobar%" clause.
       # This isn't always supported on all RDMSes.
@@ -160,6 +166,8 @@ module EZ
                 @negate ? ["#{@table_prefix}#{@name} NOT LIKE ?", value] : ["#{@table_prefix}#{@name} LIKE ?", value]
               end
             end
+          when :ilike
+            @negate ? ["#{@table_prefix}#{@name} NOT ILIKE ?", value] : ["#{@table_prefix}#{@name} ILIKE ?", value]
           when :soundex
             ["#{@table_prefix}#{@name} SOUNDS LIKE ?", value]
           when :between
@@ -173,7 +181,7 @@ module EZ
     
       # If a clause is empty it won't be added to the condition at all
       def empty?
-        (@value.to_s.empty? or (@test == :like and @value.to_s =~ /^([%]+)$/))
+        (@value.to_s.empty? or ([:like, :ilike].include?(@test) and @value.to_s =~ /^([%]+)$/))
       end
     
       # This method_missing takes care of setting

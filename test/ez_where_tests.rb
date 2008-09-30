@@ -687,11 +687,19 @@ class EZWhereTest < Test::Unit::TestCase
     clause = EZ::Where::Clause.new(:name)
     clause =~ '%'
     assert clause.empty?
-
+    
     clause = EZ::Where::Clause.new(:name)
     clause =~ '%%'
     assert clause.empty?
 
+    clause = EZ::Where::Clause.new(:name)
+    clause.ilike '%'
+    assert clause.empty?
+    
+    clause = EZ::Where::Clause.new(:name)
+    clause.ilike '%%'
+    assert clause.empty?
+    
     clause = EZ::Where::Clause.new(:value)
     clause == false
     assert !clause.empty? # NOT empty
